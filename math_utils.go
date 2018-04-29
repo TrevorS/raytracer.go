@@ -15,7 +15,7 @@ func DegreesToRadians(degrees float64) float64 {
 }
 
 // Mix mixes two color vectors and a value together and returns a new Vector.
-func Mix(v1, v2 Vector, mixValue float64) Vector {
+func Mix(v1, v2 Vec3f, mixValue float64) Vec3f {
 	return v1.multiplyScalar(1 - mixValue).add(v2.multiplyScalar(mixValue))
 }
 

@@ -1,12 +1,12 @@
 package main
 
-// Matrix44 represents a 4x4 matrix of floats.
-type Matrix44 struct {
+// Matrix44f represents a 4x4 matrix of floats.
+type Matrix44f struct {
 	x [4][4]float64
 }
 
-// MatrixNew returns a new matrix initialized to the passed in values.
-func MatrixNew(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p float64) Matrix44 {
+// Matrix44fNew returns a new matrix initialized to the passed in values.
+func Matrix44fNew(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p float64) Matrix44f {
 	x := [4][4]float64{
 		[4]float64{a, b, c, d},
 		[4]float64{e, f, g, h},
@@ -14,12 +14,12 @@ func MatrixNew(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p float64) Matrix44 
 		[4]float64{m, n, o, p},
 	}
 
-	return Matrix44{x}
+	return Matrix44f{x}
 }
 
-// MatrixZero returns a matrix initialized to all zeros.
-func MatrixZero() Matrix44 {
-	return MatrixNew(
+// Matrix44fZero returns a matrix initialized to all zeros.
+func Matrix44fZero() Matrix44f {
+	return Matrix44fNew(
 		0, 0, 0, 0,
 		0, 0, 0, 0,
 		0, 0, 0, 0,
@@ -28,8 +28,8 @@ func MatrixZero() Matrix44 {
 }
 
 // MatrixIdentity returns the identity matrix.
-func MatrixIdentity() Matrix44 {
-	return MatrixNew(
+func MatrixIdentity() Matrix44f {
+	return Matrix44fNew(
 		1, 0, 0, 0,
 		0, 1, 0, 0,
 		0, 0, 1, 0,
@@ -37,16 +37,16 @@ func MatrixIdentity() Matrix44 {
 	)
 }
 
-func (m *Matrix44) set(x, y int, value float64) {
+func (m *Matrix44f) set(x, y int, value float64) {
 	m.x[x][y] = value
 }
 
-func (m Matrix44) get(x, y int) float64 {
+func (m Matrix44f) get(x, y int) float64 {
 	return m.x[x][y]
 }
 
-func (m Matrix44) multiply(matrix Matrix44) Matrix44 {
-	result := MatrixZero()
+func (m Matrix44f) multiply(matrix Matrix44f) Matrix44f {
+	result := Matrix44fZero()
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -63,8 +63,8 @@ func (m Matrix44) multiply(matrix Matrix44) Matrix44 {
 	return result
 }
 
-func (m Matrix44) transpose() Matrix44 {
-	result := MatrixZero()
+func (m Matrix44f) transpose() Matrix44f {
+	result := Matrix44fZero()
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
@@ -77,29 +77,29 @@ func (m Matrix44) transpose() Matrix44 {
 	return result
 }
 
-func (m Matrix44) multiplyVector(v Vector) Vector {
+func (m Matrix44f) multiplyVector(v Vec3f) Vec3f {
 	x := v.x*m.get(0, 0) + v.y*m.get(1, 0) + v.z*m.get(2, 0) + m.get(3, 0)
 	y := v.x*m.get(0, 1) + v.y*m.get(1, 1) + v.z*m.get(2, 1) + m.get(3, 1)
 	z := v.x*m.get(0, 2) + v.y*m.get(1, 2) + v.z*m.get(2, 2) + m.get(3, 2)
 	w := v.x*m.get(0, 3) + v.y*m.get(1, 3) + v.z*m.get(2, 3) + m.get(3, 3)
 
 	if w != 1 && w != 0 {
-		return Vector{x / w, y / w, z / w}
+		return Vec3f{x / w, y / w, z / w}
 	}
 
-	return Vector{x, y, z}
+	return Vec3f{x, y, z}
 }
 
-func (m Matrix44) multiplyDirection(v Vector) Vector {
+func (m Matrix44f) multiplyDirection(v Vec3f) Vec3f {
 	x := v.x*m.get(0, 0) + v.y*m.get(1, 0) + v.z*m.get(2, 0)
 	y := v.x*m.get(0, 1) + v.y*m.get(1, 1) + v.z*m.get(2, 1)
 	z := v.x*m.get(0, 2) + v.y*m.get(1, 2) + v.z*m.get(2, 2)
 
-	return Vector{x, y, z}
+	return Vec3f{x, y, z}
 }
 
-func (m *Matrix44) inverse() Matrix44 {
-	result := MatrixZero()
+func (m *Matrix44f) inverse() Matrix44f {
+	result := Matrix44fZero()
 
 	for i := 0; i < 3; i++ {
 		pivot := i

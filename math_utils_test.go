@@ -40,13 +40,13 @@ func TestDegreesToRadians(t *testing.T) {
 }
 
 func TestMix(t *testing.T) {
-	v1 := Vector{1, 2, 3}
-	v2 := Vector{2, 3, 4}
+	v1 := Vec3f{1, 2, 3}
+	v2 := Vec3f{2, 3, 4}
 	mixValue := 2.0
 
 	result := Mix(v1, v2, mixValue)
 
-	expected := Vector{3, 4, 5}
+	expected := Vec3f{3, 4, 5}
 
 	if result != expected {
 		t.Errorf("%v should have been %v", result, expected)
