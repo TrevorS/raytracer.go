@@ -52,3 +52,79 @@ func TestMix(t *testing.T) {
 		t.Errorf("%v should have been %v", result, expected)
 	}
 }
+
+func TestSolveQuadraticWithTwoRoots(t *testing.T) {
+	hasRoots, x0, x1 := SolveQuadratic(5, 6, 1)
+
+	x0Expected := -1.0
+	x1Expected := -0.2
+
+	if hasRoots != true {
+		t.Errorf("hasRoots should be %v", true)
+	}
+
+	if x0 != x0Expected {
+		t.Errorf("%v should have been %v", x0, x0Expected)
+	}
+
+	if x1 != x1Expected {
+		t.Errorf("%v should have been %v", x1, x1Expected)
+	}
+}
+
+func TestSolveQuadraticWithTwoRootsNegativeB(t *testing.T) {
+	hasRoots, x0, x1 := SolveQuadratic(5, -6, 1)
+
+	x0Expected := 1.0
+	x1Expected := 0.2
+
+	if hasRoots != true {
+		t.Errorf("hasRoots should be %v", true)
+	}
+
+	if x0 != x0Expected {
+		t.Errorf("%v should have been %v", x0, x0Expected)
+	}
+
+	if x1 != x1Expected {
+		t.Errorf("%v should have been %v", x1, x1Expected)
+	}
+}
+
+func TestSolveQuadraticWithOneRoot(t *testing.T) {
+	hasRoots, x0, x1 := SolveQuadratic(1, 2, 1)
+
+	x0Expected := -1.0
+	x1Expected := -1.0
+
+	if hasRoots != true {
+		t.Errorf("hasRoots should be %v", true)
+	}
+
+	if x0 != x0Expected {
+		t.Errorf("%v should have been %v", x0, x0Expected)
+	}
+
+	if x1 != x1Expected {
+		t.Errorf("%v should have been %v", x1, x1Expected)
+	}
+}
+
+func TestSolveQuadraticWithOutRoots(t *testing.T) {
+	hasRoots, x0, x1 := SolveQuadratic(1, -3, 4)
+
+	x0Expected := 0.0
+	x1Expected := 0.0
+
+	if hasRoots != false {
+		t.Errorf("hasRoots should be %v", false)
+	}
+
+	if x0 != x0Expected {
+		t.Errorf("%v should have been %v", x0, x0Expected)
+	}
+
+	if x1 != x1Expected {
+		t.Errorf("%v should have been %v", x1, x1Expected)
+	}
+}
