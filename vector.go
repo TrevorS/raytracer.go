@@ -1,6 +1,8 @@
 package main
 
-import "math"
+import (
+	"math"
+)
 
 // Vector represents a three dimensional floating point vector.
 type Vector struct {
