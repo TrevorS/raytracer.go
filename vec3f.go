@@ -87,17 +87,15 @@ func (v Vec3f) length() float64 {
 	return math.Sqrt(v.norm())
 }
 
-func (v Vec3f) normalize() Vec3f {
+func (v *Vec3f) normalize() *Vec3f {
 	n := v.norm()
 
 	if n > 0 {
 		factor := 1 / math.Sqrt(n)
 
-		return Vec3f{
-			x: v.x * factor,
-			y: v.y * factor,
-			z: v.z * factor,
-		}
+		v.x *= factor
+		v.y *= factor
+		v.z *= factor
 	}
 
 	return v
