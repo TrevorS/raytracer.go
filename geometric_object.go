@@ -4,5 +4,6 @@ package main
 // of intersection of surface logic.
 type GeometricObject interface {
 	intersect(origin, direction Vec3f) (bool, float64)
-	getSurfaceData(phit Vec3f) (Vec3f, Vec3f)
+	getSurfaceData(phit Vec3f) (Vec3f, Vec2f)
+	getColor() Vec3f
 }
