@@ -12,7 +12,7 @@ func Vec2fZero() Vec2f {
 
 // Vec2fAt returns a Vector initialized with x, y as the same value.
 func Vec2fAt(value float64) Vec2f {
-	return Vec2f{x: 0, y: 0}
+	return Vec2f{x: value, y: value}
 }
 
 func (v Vec2f) add(vector Vec2f) Vec2f {

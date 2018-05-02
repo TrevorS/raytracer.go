@@ -5,32 +5,12 @@ import (
 	"testing"
 )
 
-func testVectorValues(x, y, z float64, v Vec3f, t *testing.T) {
-	if v.x != x {
-		t.Errorf("x should be %v, was %v", x, v.x)
-	}
-
-	if v.y != y {
-		t.Errorf("y should be %v, was %v", y, v.y)
-	}
-
-	if v.z != z {
-		t.Errorf("z should be %v, was %v", z, v.z)
-	}
-}
-
-func testValue(expected, value float64, t *testing.T) {
-	if value != expected {
-		t.Errorf("value should be %v, was %v", expected, value)
-	}
-}
-
 func TestVec3fZero(t *testing.T) {
 	expected := 0.0
 
 	v := Vec3fZero()
 
-	testVectorValues(expected, expected, expected, v, t)
+	TestVec3fValues(expected, expected, expected, v, t)
 }
 
 func TestVec3fAt(t *testing.T) {
@@ -38,7 +18,7 @@ func TestVec3fAt(t *testing.T) {
 
 	v := Vec3fAt(expected)
 
-	testVectorValues(expected, expected, expected, v, t)
+	TestVec3fValues(expected, expected, expected, v, t)
 }
 
 func TestVec3fNegate(t *testing.T) {
@@ -47,7 +27,7 @@ func TestVec3fNegate(t *testing.T) {
 
 	v := Vec3fAt(value).negate()
 
-	testVectorValues(expected, expected, expected, v, t)
+	TestVec3fValues(expected, expected, expected, v, t)
 }
 
 func TestVec3fAdd(t *testing.T) {
@@ -58,7 +38,7 @@ func TestVec3fAdd(t *testing.T) {
 	v := Vec3f{x, y, z}
 	v2 := Vec3f{x, y, z}
 
-	testVectorValues(
+	TestVec3fValues(
 		x+x,
 		y+y,
 		z+z,
@@ -75,7 +55,7 @@ func TestVec3fSubtract(t *testing.T) {
 	v := Vec3f{x, y, z}
 	v2 := Vec3f{x, y, z}
 
-	testVectorValues(
+	TestVec3fValues(
 		x-x,
 		y-y,
 		z-z,
@@ -92,7 +72,7 @@ func TestVec3fMultiply(t *testing.T) {
 	v := Vec3f{x, y, z}
 	v2 := Vec3f{x, y, z}
 
-	testVectorValues(
+	TestVec3fValues(
 		x*x,
 		y*y,
 		z*z,
@@ -109,7 +89,7 @@ func TestVec3fMultiplyScalar(t *testing.T) {
 
 	v := Vec3f{x, y, z}
 
-	testVectorValues(
+	TestVec3fValues(
 		x*value,
 		y*value,
 		z*value,
@@ -129,7 +109,7 @@ func TestVec3fDotProduct(t *testing.T) {
 	dotProduct := v.dotProduct(v2)
 	expected := v.x*v2.x + v.y*v2.y + v.z*v2.z
 
-	testValue(expected, dotProduct, t)
+	TestFloatValue("dotProduct", expected, dotProduct, t)
 }
 
 func TestVec3fDivideScalar(t *testing.T) {
@@ -140,7 +120,7 @@ func TestVec3fDivideScalar(t *testing.T) {
 	v := Vec3f{x, y, z}
 	value := 2.0
 
-	testVectorValues(
+	TestVec3fValues(
 		x/value,
 		y/value,
 		z/value,
@@ -157,7 +137,7 @@ func TestVec3fCrossProduct(t *testing.T) {
 	v := Vec3f{x, y, z}
 	v2 := Vec3f{x, y, z}
 
-	testVectorValues(
+	TestVec3fValues(
 		v.y*v2.z-v.z*v2.y,
 		v.z*v2.x-v.x*v2.z,
 		v.x*v2.y-v.y*v2.x,
@@ -176,7 +156,7 @@ func TestVec3fNorm(t *testing.T) {
 
 	expected := v.x*v.x + v.y*v.y + v.z*v.z
 
-	testValue(expected, norm, t)
+	TestFloatValue("norm", expected, norm, t)
 }
 
 func TestVec3fLength(t *testing.T) {
@@ -187,5 +167,5 @@ func TestVec3fLength(t *testing.T) {
 	v := Vec3f{x, y, z}
 	expected := math.Sqrt(v.norm())
 
-	testValue(expected, v.length(), t)
+	TestFloatValue("length", expected, v.length(), t)
 }
