@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -31,10 +32,13 @@ func WriteImage(filename string, options Options, framebuffer []Vec3f) {
 func createHeader(height, width int) string {
 	var header strings.Builder
 
+	sHeight := strconv.Itoa(height)
+	sWidth := strconv.Itoa(width)
+
 	header.WriteString("P6\n")
-	header.WriteString(string(height))
+	header.WriteString(sHeight)
 	header.WriteString(" ")
-	header.WriteString(string(width))
+	header.WriteString(sWidth)
 	header.WriteString("\n255\n")
 
 	return header.String()
