@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+raytracer
 
 # Test binary, build with `go test -c`
 *.test
