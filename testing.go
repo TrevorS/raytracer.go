@@ -21,3 +21,10 @@ func TestFloatValue(name string, expected, value float64, t *testing.T) {
 		t.Errorf("%v should be %v, was %v", name, expected, value)
 	}
 }
+
+// TestBooleanValue compares a boolean value to an expected value.
+func TestBooleanValue(name string, expected, value bool, t *testing.T) {
+	if value != expected {
+		t.Errorf("%v should be %v, was %v", name, expected, value)
+	}
+}

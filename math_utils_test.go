@@ -11,9 +11,7 @@ func TestClampHigh(t *testing.T) {
 
 	result := Clamp(low, high, value)
 
-	if result != high {
-		t.Errorf("%v should have been %v", value, high)
-	}
+	TestFloatValue("clamp high", high, result, t)
 }
 
 func TestClampLow(t *testing.T) {
@@ -23,9 +21,7 @@ func TestClampLow(t *testing.T) {
 
 	result := Clamp(low, high, value)
 
-	if result != low {
-		t.Errorf("%v should have been %v", value, low)
-	}
+	TestFloatValue("clamp low", low, result, t)
 }
 
 func TestDegreesToRadians(t *testing.T) {
@@ -34,9 +30,7 @@ func TestDegreesToRadians(t *testing.T) {
 
 	result := DegreesToRadians(degrees)
 
-	if result != radians {
-		t.Errorf("%v should have been %v", result, radians)
-	}
+	TestFloatValue("degrees to radians", radians, result, t)
 }
 
 func TestMix(t *testing.T) {
@@ -46,11 +40,13 @@ func TestMix(t *testing.T) {
 
 	result := Mix(v1, v2, mixValue)
 
-	expected := Vec3f{3, 4, 5}
-
-	if result != expected {
-		t.Errorf("%v should have been %v", result, expected)
-	}
+	TestVec3fValues(
+		3,
+		4,
+		5,
+		result,
+		t,
+	)
 }
 
 func TestSolveQuadraticWithTwoRoots(t *testing.T) {
@@ -59,17 +55,10 @@ func TestSolveQuadraticWithTwoRoots(t *testing.T) {
 	x0Expected := -1.0
 	x1Expected := -0.2
 
-	if hasRoots != true {
-		t.Errorf("hasRoots should be %v", true)
-	}
+	TestBooleanValue("hasRoots", true, hasRoots, t)
 
-	if x0 != x0Expected {
-		t.Errorf("%v should have been %v", x0, x0Expected)
-	}
-
-	if x1 != x1Expected {
-		t.Errorf("%v should have been %v", x1, x1Expected)
-	}
+	TestFloatValue("x0", x0Expected, x0, t)
+	TestFloatValue("x1", x1Expected, x1, t)
 }
 
 func TestSolveQuadraticWithTwoRootsNegativeB(t *testing.T) {
@@ -78,17 +67,10 @@ func TestSolveQuadraticWithTwoRootsNegativeB(t *testing.T) {
 	x0Expected := 1.0
 	x1Expected := 0.2
 
-	if hasRoots != true {
-		t.Errorf("hasRoots should be %v", true)
-	}
+	TestBooleanValue("hasRoots", true, hasRoots, t)
 
-	if x0 != x0Expected {
-		t.Errorf("%v should have been %v", x0, x0Expected)
-	}
-
-	if x1 != x1Expected {
-		t.Errorf("%v should have been %v", x1, x1Expected)
-	}
+	TestFloatValue("x0", x0Expected, x0, t)
+	TestFloatValue("x1", x1Expected, x1, t)
 }
 
 func TestSolveQuadraticWithOneRoot(t *testing.T) {
@@ -97,17 +79,10 @@ func TestSolveQuadraticWithOneRoot(t *testing.T) {
 	x0Expected := -1.0
 	x1Expected := -1.0
 
-	if hasRoots != true {
-		t.Errorf("hasRoots should be %v", true)
-	}
+	TestBooleanValue("hasRoots", true, hasRoots, t)
 
-	if x0 != x0Expected {
-		t.Errorf("%v should have been %v", x0, x0Expected)
-	}
-
-	if x1 != x1Expected {
-		t.Errorf("%v should have been %v", x1, x1Expected)
-	}
+	TestFloatValue("x0", x0Expected, x0, t)
+	TestFloatValue("x1", x1Expected, x1, t)
 }
 
 func TestSolveQuadraticWithOutRoots(t *testing.T) {
@@ -116,15 +91,8 @@ func TestSolveQuadraticWithOutRoots(t *testing.T) {
 	x0Expected := 0.0
 	x1Expected := 0.0
 
-	if hasRoots != false {
-		t.Errorf("hasRoots should be %v", false)
-	}
+	TestBooleanValue("hasRoots", false, hasRoots, t)
 
-	if x0 != x0Expected {
-		t.Errorf("%v should have been %v", x0, x0Expected)
-	}
-
-	if x1 != x1Expected {
-		t.Errorf("%v should have been %v", x1, x1Expected)
-	}
+	TestFloatValue("x0", x0Expected, x0, t)
+	TestFloatValue("x1", x1Expected, x1, t)
 }
