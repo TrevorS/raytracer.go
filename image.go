@@ -19,7 +19,7 @@ func WriteImage(filename string, options Options, framebuffer []Vec3f) {
 	}
 	defer f.Close()
 
-	header := createHeader(options.height, options.width)
+	header := createHeader(options.width, options.height)
 
 	f.WriteString(header)
 
@@ -29,16 +29,16 @@ func WriteImage(filename string, options Options, framebuffer []Vec3f) {
 	}
 }
 
-func createHeader(height, width int) string {
+func createHeader(width, height int) string {
 	var header strings.Builder
 
-	sHeight := strconv.Itoa(height)
 	sWidth := strconv.Itoa(width)
+	sHeight := strconv.Itoa(height)
 
 	header.WriteString("P6\n")
-	header.WriteString(sHeight)
-	header.WriteString(" ")
 	header.WriteString(sWidth)
+	header.WriteString(" ")
+	header.WriteString(sHeight)
 	header.WriteString("\n255\n")
 
 	return header.String()
