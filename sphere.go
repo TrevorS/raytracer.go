@@ -77,8 +77,8 @@ func (s Sphere) getColor() Vec3f {
 
 func generateRandomColor() Vec3f {
 	return Vec3f{
-		x: rand.Float64(),
-		y: rand.Float64(),
-		z: rand.Float64(),
+		x: rand.Float64() * 255,
+		y: rand.Float64() * 255,
+		z: rand.Float64() * 255,
 	}
 }
