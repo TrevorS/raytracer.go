@@ -2,7 +2,7 @@ package main
 
 // Matrix44f represents a 4x4 matrix of floats.
 type Matrix44f struct {
-	x [4][4]float64
+	numbers [4][4]float64
 }
 
 // Matrix44fNew returns a new matrix initialized to the passed in values.
@@ -27,8 +27,8 @@ func Matrix44fZero() Matrix44f {
 	)
 }
 
-// MatrixIdentity returns the identity matrix.
-func MatrixIdentity() Matrix44f {
+// Matrix44fIdentity returns the identity matrix.
+func Matrix44fIdentity() Matrix44f {
 	return Matrix44fNew(
 		1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -38,11 +38,11 @@ func MatrixIdentity() Matrix44f {
 }
 
 func (m *Matrix44f) set(x, y int, value float64) {
-	m.x[x][y] = value
+	m.numbers[x][y] = value
 }
 
 func (m Matrix44f) get(x, y int) float64 {
-	return m.x[x][y]
+	return m.numbers[x][y]
 }
 
 func (m Matrix44f) multiply(matrix Matrix44f) Matrix44f {
@@ -51,12 +51,12 @@ func (m Matrix44f) multiply(matrix Matrix44f) Matrix44f {
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			value :=
-				m.get(i, 0)*matrix.get(0, j) +
-					m.get(i, 1)*matrix.get(1, j) +
-					m.get(i, 2)*matrix.get(2, j) +
-					m.get(i, 3)*matrix.get(3, j)
+				m.numbers[i][0]*matrix.numbers[0][j] +
+					m.numbers[i][1]*matrix.numbers[1][j] +
+					m.numbers[i][2]*matrix.numbers[2][j] +
+					m.numbers[i][3]*matrix.numbers[3][j]
 
-			result.set(i, j, value)
+			result.numbers[i][j] = value
 		}
 	}
 
@@ -68,9 +68,9 @@ func (m Matrix44f) transpose() Matrix44f {
 
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
-			value := m.get(j, i)
+			value := m.numbers[j][i]
 
-			result.set(i, j, value)
+			result.numbers[i][j] = value
 		}
 	}
 
@@ -78,10 +78,10 @@ func (m Matrix44f) transpose() Matrix44f {
 }
 
 func (m Matrix44f) multiplyVector(v Vec3f) Vec3f {
-	x := v.x*m.get(0, 0) + v.y*m.get(1, 0) + v.z*m.get(2, 0) + m.get(3, 0)
-	y := v.x*m.get(0, 1) + v.y*m.get(1, 1) + v.z*m.get(2, 1) + m.get(3, 1)
-	z := v.x*m.get(0, 2) + v.y*m.get(1, 2) + v.z*m.get(2, 2) + m.get(3, 2)
-	w := v.x*m.get(0, 3) + v.y*m.get(1, 3) + v.z*m.get(2, 3) + m.get(3, 3)
+	x := v.x*m.numbers[0][0] + v.y*m.numbers[1][0] + v.z*m.numbers[2][0] + m.numbers[3][0]
+	y := v.x*m.numbers[0][1] + v.y*m.numbers[1][1] + v.z*m.numbers[2][1] + m.numbers[3][1]
+	z := v.x*m.numbers[0][2] + v.y*m.numbers[1][2] + v.z*m.numbers[2][2] + m.numbers[3][2]
+	w := v.x*m.numbers[0][3] + v.y*m.numbers[1][3] + v.z*m.numbers[2][3] + m.numbers[3][3]
 
 	if w != 1 && w != 0 {
 		return Vec3f{x / w, y / w, z / w}
@@ -91,26 +91,26 @@ func (m Matrix44f) multiplyVector(v Vec3f) Vec3f {
 }
 
 func (m Matrix44f) multiplyDirection(v Vec3f) Vec3f {
-	x := v.x*m.get(0, 0) + v.y*m.get(1, 0) + v.z*m.get(2, 0)
-	y := v.x*m.get(0, 1) + v.y*m.get(1, 1) + v.z*m.get(2, 1)
-	z := v.x*m.get(0, 2) + v.y*m.get(1, 2) + v.z*m.get(2, 2)
+	x := v.x*m.numbers[0][0] + v.y*m.numbers[1][0] + v.z*m.numbers[2][0]
+	y := v.x*m.numbers[0][1] + v.y*m.numbers[1][1] + v.z*m.numbers[2][1]
+	z := v.x*m.numbers[0][2] + v.y*m.numbers[1][2] + v.z*m.numbers[2][2]
 
 	return Vec3f{x, y, z}
 }
 
 func (m *Matrix44f) inverse() Matrix44f {
-	result := Matrix44fZero()
+	result := Matrix44fIdentity()
 
 	for i := 0; i < 3; i++ {
 		pivot := i
 
-		pivotSize := m.get(i, i)
+		pivotSize := m.numbers[i][i]
 
 		if pivotSize < 0 {
 			pivotSize = -pivotSize
 
 			for j := i + 1; j < 4; j++ {
-				tmp := m.get(j, i)
+				tmp := m.numbers[j][i]
 
 				if tmp < 0 {
 					tmp = -tmp
@@ -125,63 +125,44 @@ func (m *Matrix44f) inverse() Matrix44f {
 
 		if pivotSize == 0 {
 			// Cannot invert singular matrix
-			return MatrixIdentity()
+			return Matrix44fIdentity()
 		}
 
 		if pivot != i {
 			for j := 0; j < 4; j++ {
-				tmp := m.get(i, j)
-
-				m.set(i, j, m.get(pivot, j))
-				result.set(pivot, j, tmp)
-
-				tmp = result.get(i, j)
-
-				result.set(i, j, result.get(pivot, j))
-				result.set(pivot, j, tmp)
+				m.numbers[i][j], m.numbers[pivot][j] = m.numbers[pivot][j], m.numbers[i][j]
+				result.numbers[i][j], result.numbers[pivot][j] = result.numbers[pivot][j], result.numbers[i][j]
 			}
 		}
 
 		for j := i + 1; j < 4; j++ {
-			f := result.get(j, i) / result.get(i, i)
+			f := m.numbers[j][i] / m.numbers[i][i]
 
 			for k := 0; k < 4; k++ {
-				a := m.get(j, k) - f*result.get(i, k)
-				b := result.get(j, k) - f*m.get(i, k)
-
-				m.set(j, k, a)
-				result.set(j, k, b)
+				m.numbers[j][k] -= f * m.numbers[i][k]
+				result.numbers[j][k] -= f * result.numbers[i][k]
 			}
 		}
 	}
 
-	for i := 3; i >= 0; {
-		// fake prefix decrement
-		i++
-
-		f := m.get(i, i)
+	for i := 3; i >= 0; i-- {
+		f := m.numbers[i][i]
 
 		if f == 0 {
-			return MatrixIdentity()
+			return Matrix44fIdentity()
 		}
 
 		for j := 0; j < 4; j++ {
-			a := m.get(i, j) / f
-			b := result.get(i, j) / f
-
-			m.set(i, j, a)
-			result.set(i, j, b)
+			m.numbers[i][j] /= f
+			result.numbers[i][j] /= f
 		}
 
 		for j := 0; j < i; j++ {
-			f = m.get(j, i)
+			f = m.numbers[j][i]
 
 			for k := 0; k < 4; k++ {
-				a := m.get(j, k) - f*result.get(i, k)
-				b := result.get(j, k) - f*m.get(i, k)
-
-				m.set(j, k, a)
-				result.set(j, k, b)
+				m.numbers[j][k] -= f * m.numbers[i][k]
+				result.numbers[j][k] -= f * result.numbers[i][k]
 			}
 		}
 	}
